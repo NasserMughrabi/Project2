@@ -1,11 +1,14 @@
-from code import interact
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.forms import CharField, IntegerField
 
 
 class User(AbstractUser):
     pass
+
+# Categories table
+class Categorie(models.Model):
+    # columns
+    category = models.CharField(primary_key=True, max_length=64)
 
 # Listings table
 class Listing(models.Model):
@@ -15,6 +18,7 @@ class Listing(models.Model):
     description = models.CharField(max_length=500)
     price = models.IntegerField()
     image_URL = models.URLField(blank=True)
+    category = models.ForeignKey(Categorie, on_delete=models.CASCADE, related_name="listing")
 
 # Bids table
 class Bid(models.Model):
@@ -29,3 +33,5 @@ class Comment(models.Model):
     comment_id = models.AutoField(primary_key=True)
     listing_id  = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="comments")
     content = models.CharField(max_length=250)
+
+

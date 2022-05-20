@@ -1,3 +1,4 @@
+from unicodedata import category
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
@@ -64,17 +65,41 @@ def index(request):
         "listings": Listing.objects.all()
     })
 
-# display all listings of some category
+# display a list of categories from categoreis table/model as links
 def categories(request):
-    return render(request, "auctions/categories.html")
+    return render(request, "auctions/categories.html", {
+        "categories": Categorie.objects.all()
+        })
+
+def category_listings(request, category_name):
+    return render(request, "auctions/category_listings.html", {
+        "category_name": category_name,
+        "category_listings": Listing.objects.filter(category=category_name)
+    })
 
 # display user's watchlist of listings
 def watchlist(request):
     return render(request, "auctions/watchlist.html")
 
-# create a listing and add it to some category and therefore to all listings 
-def create_listing(request):
+def create_listing_form(request):
     return render(request, "auctions/create_listing.html")
 
-def listing_detail(request):
-    return render(request, "auction/listing_detail.html")
+
+# create a listing and add it to some category and therefore to all listings 
+def create_listing(request):
+    title = request.POST.get("title")
+    description = request.POST.get("description")
+    bid = request.POST.get("bid")
+    image = request.POST.get("image")
+    category = request.POST.get("category")
+    listing = Listing(id(Listing), title, description, bid, image, category)
+    listing.save()
+    
+    return render(request, "auctions/listing_details.html", {
+        "listing": listing
+    })
+
+def listing_details(request, listing):
+    return render(request, "auctions/listing_details.html", {
+        "listing": listing
+    })
