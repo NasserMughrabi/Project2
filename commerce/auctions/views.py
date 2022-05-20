@@ -3,12 +3,7 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-
-from .models import User
-
-
-def index(request):
-    return render(request, "auctions/index.html")
+from .models import *
 
 
 def login_view(request):
@@ -61,3 +56,25 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "auctions/register.html")
+
+
+# display all listing from all users to the current session
+def index(request):
+    return render(request, "auctions/index.html", {
+        "listings": Listing.objects.all()
+    })
+
+# display all listings of some category
+def categories(request):
+    return render(request, "auctions/categories.html")
+
+# display user's watchlist of listings
+def watchlist(request):
+    return render(request, "auctions/watchlist.html")
+
+# create a listing and add it to some category and therefore to all listings 
+def create_listing(request):
+    return render(request, "auctions/create_listing.html")
+
+def listing_detail(request):
+    return render(request, "auction/listing_detail.html")
