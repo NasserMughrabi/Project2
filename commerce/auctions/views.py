@@ -79,6 +79,7 @@ def category_listings(request, category_name):
 
 # display user's watchlist of listings
 def watchlist(request):
+    # watchlist_listings = '
     return render(request, "auctions/watchlist.html")
 
 def create_listing_form(request):
@@ -99,7 +100,8 @@ def create_listing(request):
         "listing": listing
     })
 
-def listing_details(request, listing):
+def listing_details(request, listing_id):
+    listing = Listing.objects.get(pk=listing_id)
     return render(request, "auctions/listing_details.html", {
         "listing": listing
     })

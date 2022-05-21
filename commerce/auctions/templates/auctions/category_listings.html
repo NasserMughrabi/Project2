@@ -4,12 +4,16 @@
 <h2>{{category_name}} Listings</h2>
 
 {% for listing in category_listings %}
-<h4>Listing {{listing.listing_id}}: {{listing.title}}</h4>
+<h4>
+    <a href="{% url 'listing_details' listing.listing_id %}">
+        Listing {{listing.listing_id}}: {{listing.title}}
+    </a>
+</h4>
 <ul>
     <li>Description: {{listing.description}}</li>
     <li>Current price: ${{listing.price}}</li>
     {% if listing.image_URL %}
-    <li>Image: {{listing.image_URL}}</li>
+    <li>Image: <img src="{{listing.image_URL}}" alt=""></li>
     {% endif %}
 </ul>
 {% endfor %}

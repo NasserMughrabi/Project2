@@ -5,6 +5,7 @@ from django.db import models
 class User(AbstractUser):
     pass
 
+
 # Categories table
 class Categorie(models.Model):
     # columns
@@ -19,6 +20,10 @@ class Listing(models.Model):
     price = models.IntegerField()
     image_URL = models.URLField(blank=True)
     category = models.ForeignKey(Categorie, on_delete=models.CASCADE, related_name="listing")
+
+# class watchlist(models.Model):
+#     user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name="watchlist", primary_key=True)
+#     listing_id = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="watchlist(s)", primary_key=True)
 
 # Bids table
 class Bid(models.Model):
