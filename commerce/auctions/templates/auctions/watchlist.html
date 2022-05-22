@@ -4,5 +4,16 @@
 {% block body %}
 <h2>Watchlist</h2>
 
+<h4>My Listings</h4>
+
+{% for listing in listings %}
+<ul>
+    <li>
+        <a href="{% url 'listing_details' listing.listing_id %}">
+            Listing {{listing.listing.listing_id}}: {{listing.listing.title}}
+        </a>
+    </li> 
+</ul>
+{% endfor %}
 
 {% endblock %}

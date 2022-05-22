@@ -5,13 +5,64 @@
 {% block body %}
 <h2>{{listing.category.category}} Category</h2>
 <h4>Listing {{listing.listing_id}}: {{listing.title}}</h4>
+{% if listing.closed %}
+<h4>Listing is Closed and Winner is {{highest_bidder}}</h4>
+{% endif %}
 <ul>
     <li>Description: {{listing.description}}</li>
-    <li>Current price: ${{listing.price}}</li>
+    <li>Starting bid: ${{listing.price}}</li>
+    {% if highest_bid %}
+    <li>Highest bid: ${{highest_bid}}</li>
+    {% else %}
+    <li>Highest bid: ${{listing.price}}</li>
+    {% endif %}
+    <li>Highest bidder: {{highest_bidder}}</li>
     {% if listing.image_URL %}
     <li>Image: <img src="{{listing.image_URL}}" alt=""></li>
     {% endif %}
 </ul>
 
+
+{% if comments %}
+<h4>Comments</h4>
+{% for comment in comments %}
+<li>{{comment.content}}</li>
+{% endfor %}
+{% endif %}
+
+{% if bids %}
+<h4>Bids</h4>
+{% for bid in bids %}
+<li>{{bid.price}}</li>
+{% endfor %}
+{% endif %}
+
+<form action="{% url 'add_to_watchlist' listing.listing_id %}" method="post">
+    {% csrf_token %}
+    <input type="submit" , value="Add to watchlist">
+</form>
+<form action="{% url 'remove_from_watchlist' listing.listing_id %}" method="post">
+    {% csrf_token %}
+    <input type="submit" , value="Remove from watchlist">
+</form>
+
+<form action="{% url 'add_bid' listing.listing_id %}" method="post">
+    {% csrf_token %}
+    <input type="text" name="bid">
+    <input id="bid" type="submit" , value="Add bid">
+</form>
+
+<form action="{% url 'add_comment' listing.listing_id %}" method="post">
+    {% csrf_token %}
+    <input type="text" name="comment">
+    <input id="comment" type="submit" , value="Add comment">
+</form>
+
+{% if owner and not closed %}
+<form action="{% url 'close_auction' listing.listing_id %}" method="post">
+    {% csrf_token %}
+    <input id="close" type="submit" , value="Close auction">
+</form>
+{% endif %}
 
 {% endblock %}

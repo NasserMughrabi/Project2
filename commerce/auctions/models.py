@@ -20,10 +20,12 @@ class Listing(models.Model):
     price = models.IntegerField()
     image_URL = models.URLField(blank=True)
     category = models.ForeignKey(Categorie, on_delete=models.CASCADE, related_name="listing")
+    username = models.CharField(max_length=64)
+    closed = models.BooleanField()
 
-# class watchlist(models.Model):
-#     user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name="watchlist", primary_key=True)
-#     listing_id = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="watchlist(s)", primary_key=True)
+class Watchlist(models.Model):
+    listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="watchlist", primary_key=True)
+    username = models.CharField(max_length=64)
 
 # Bids table
 class Bid(models.Model):
@@ -31,6 +33,7 @@ class Bid(models.Model):
     bid_id = models.AutoField(primary_key=True)
     listing_id = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="bids")
     price = models.IntegerField()
+    username = models.CharField(max_length=64)
 
 # Comments table
 class Comment(models.Model):
